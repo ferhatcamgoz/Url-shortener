@@ -23,7 +23,7 @@ public class User implements UserDetails {
     private  long id;
     @UniqeUserName
     private String userName;
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "Parola Oluşturma Kurulana Uyunuz")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "Parola en az bir küçük harf, bir büyük harf ve bir işaret veya rakam olmalı")
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
