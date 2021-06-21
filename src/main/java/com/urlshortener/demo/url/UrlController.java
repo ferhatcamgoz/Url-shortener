@@ -1,5 +1,7 @@
 package com.urlshortener.demo.url;
 
+import com.urlshortener.demo.exception.Apiexception;
+import com.urlshortener.demo.exception.NotFoundException;
 import com.urlshortener.demo.user.User;
 import com.urlshortener.demo.util.CurrnetUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +39,12 @@ public class UrlController {
 
     }
     @RequestMapping(value="/{randomstring}", method=RequestMethod.GET)
-    public void getShortenUrl(HttpServletResponse response,@PathVariable("randomstring") String randomString) throws IOException {
-
-
-        response.sendRedirect("http://"+urlService.getLongUrl(randomString));
-
+    public void getShortenUrl(HttpServletResponse response, @PathVariable("randomstring") String randomString) throws IOException {
+        String url =urlService.getLongUrl(randomString);
+        if(url==null){
+            throw new NotFoundException();
+        }
+            response.sendRedirect("http://"+url);
     }
     @RequestMapping(method= RequestMethod.GET)
     public Stream<UrlDTO> getUrls(@CurrnetUser User user,HttpServletRequest request) {

@@ -1,5 +1,6 @@
 package com.urlshortener.demo.url;
 
+import com.urlshortener.demo.exception.NotFoundException;
 import com.urlshortener.demo.user.User;
 import com.urlshortener.demo.util.UrlDuplicate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +50,11 @@ public class UrlService {
     }
     public String getLongUrl(String shortUrl){
         System.out.println(shortUrl);
-
-        return urlRepository.findByShortUrl(shortUrl).getLongUrl();
-
-
-
+        Url url = urlRepository.findByShortUrl(shortUrl);
+        if(url==null){
+            throw new NotFoundException();
+        }
+            return url.getLongUrl();
 
     }
 
