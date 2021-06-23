@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.net.IDN;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +46,10 @@ public class UrlController {
         if(url==null){
             throw new NotFoundException();
         }
-            response.sendRedirect("http://"+url);
+
+        String idn = IDN.toASCII(url);
+        String newURL = "http://" + idn;
+        response.sendRedirect(newURL);
     }
     @RequestMapping(method= RequestMethod.GET)
     public Stream<UrlDTO> getUrls(@CurrnetUser User user,HttpServletRequest request) {
