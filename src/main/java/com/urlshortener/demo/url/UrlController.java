@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 public class UrlController {
 
     @Autowired
-    UrlService urlService;
+   private UrlService urlService;
 
 
 
@@ -46,10 +46,15 @@ public class UrlController {
         if(url==null){
             throw new NotFoundException();
         }
+        if(!url.startsWith("http")){
+            String idn = IDN.toASCII(url);
+            url = "http://" +idn;
+        }
 
-        String idn = IDN.toASCII(url);
-        String newURL = "http://" + idn;
-        response.sendRedirect(newURL);
+
+
+
+        response.sendRedirect(url);
     }
     @RequestMapping(method= RequestMethod.GET)
     public Stream<UrlDTO> getUrls(@CurrnetUser User user,HttpServletRequest request) {
